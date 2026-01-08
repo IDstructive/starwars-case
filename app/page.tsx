@@ -176,11 +176,8 @@ const NodeAsHandleFlow = () => {
           fitView
           fitViewOptions={fitViewOptions}
           connectionMode={ConnectionMode.Loose}
-          className="bg-teal-50"
+          className="h-full"
         >
-          <Panel position="top-right">
-
-          </Panel>
           <Controls showInteractive={false} />
           <Background />
 
