@@ -1,65 +1,193 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  ReactFlow,
+  Background,
+  useNodesState,
+  useEdgesState,
+  ConnectionMode,
+  type Edge,
+  type Node,
+  Panel,
+  Controls,
+} from '@xyflow/react';
+
+import './global.css';
+import '@xyflow/react/dist/style.css';
+
+import { initialNodes } from './lib/initial-nodes';
+import { initialEdges } from './lib/initial-edges';
+import { calculateDistance, detectFullPath, possiblePaths } from './lib/actions';
+
+import SimpleFloatingEdge from './ui/SimpleFloatingEdge';
+import CustomNode from './ui/CustomNode';
+import CustomEdge from './ui/CustomEdge';
+import AudioPlayer from './ui/AudioPlayer';
+import BottomMenu from './ui/BottomMenu';
+
+
+const nodeTypes = {
+  custom: CustomNode,
+};
+
+const edgeTypes: any = {
+  floating: SimpleFloatingEdge,
+  custom: CustomEdge,
+};
+
+const fitViewOptions = { padding: 1 };
+
+const NodeAsHandleFlow = () => {
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [allEdges, setAllEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [empireWinning, setEmpireWinning] = useState(true);
+  const [fuel, setFuel] = useState(10);
+  const [hasManuallyControlledMusic, setHasManuallyControlledMusic] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+
+  const visibleEdges = allEdges.filter(edge => {
+    if (edge.id === '5-3' || edge.id === '3-5') {
+      return true;
+    }
+    const cost = edge.data?.label ? Number(edge.data.label) : Infinity;
+    return cost < fuel;
+  });
+
+  useEffect(() => {
+    const edgesWithCosts = allEdges.map((edge) => {
+      const sourceNode = nodes.find((node) => node.id === edge.source);
+      const targetNode = nodes.find((node) => node.id === edge.target);
+
+      if (sourceNode && targetNode && edge.id !== '5-3' && edge.id !== '3-5') {
+        const cost = calculateDistance(edge, sourceNode, targetNode);
+
+        const new_data = { ...edge.data, label: cost };
+        return { ...edge, data: new_data };
+      }
+      return edge;
+    });
+    setAllEdges(edgesWithCosts);
+  }, [nodes, allEdges.length]);
+
+
+  useEffect(() => {
+    console.log(possiblePaths(visibleEdges, fuel));
+  }, [visibleEdges, fuel]);
+
+
+  useEffect(() => {
+
+    const empireShot = {
+      id: '5-3',
+      source: '5',
+      target: '3',
+      sourceHandle: 'd',
+      targetHandle: 'b',
+      deletable: false,
+      reconnectable: false,
+      type: 'custom',
+      animated:true,
+      data: {
+        label: '🔫 Empire wins!!!',
+      }
+    }
+
+    const rebelShot = {
+      id: '3-5',
+      source: '3',
+      target: '5',
+      sourceHandle: 'b',
+      targetHandle: 'd',
+      deletable: false,
+      reconnectable: false,
+      type: 'custom',
+      animated:true,
+      data: {
+        label: 'Rebels win!!!',
+      }
+    }
+
+    setAllEdges((eds) => {
+      const filteredEdges = eds.filter((e) => e.id !== '5-3' && e.id !== '3-5');
+      if (empireWinning) {
+        return [...filteredEdges, empireShot];
+      }
+      return [...filteredEdges, rebelShot];
+    });
+
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === '3') {
+          const newBackgroundColor = empireWinning ? '#000000ff' : '#A1CEC6';
+          const newColor = empireWinning ? '#e8e8e8ff' : '#292929ff';
+          const newLabel = empireWinning ? 'Endor ☠️' : 'Endor';
+          
+          return {
+            ...node,
+            data: { ...node.data, label: newLabel, style: { ...node.data.style, color: newColor, backgroundColor: newBackgroundColor } },
+          };
+        }
+        if (node.id === '5') {
+          const newBackgroundColor = empireWinning ? '#8e8484ff' : '#000000ff';
+          const newColor = empireWinning ? '#000000ff' : '#A1CEC6';
+          const newLabel = empireWinning ? 'Death star' : 'Death star ☠️';
+
+          return {
+            ...node,
+            data: { ...node.data, label: newLabel, style: { ...node.data.style, color: newColor, backgroundColor: newBackgroundColor } },
+          };
+        }
+        return node;
+      })
+    );
+  }, [empireWinning, setAllEdges, setNodes]);
+
+  useEffect(() => {
+    detectFullPath(visibleEdges) ? 
+    setEmpireWinning(false) :
+    setEmpireWinning(true)
+  }, [visibleEdges]);
+
+  const startMusicOnInteraction = useCallback(() => {
+    // Start music on user interaction only if it hasn't been manually controlled yet.
+    if (!isMusicPlaying && !hasManuallyControlledMusic) {
+      setIsMusicPlaying(true);
+    }
+  }, [isMusicPlaying, hasManuallyControlledMusic]);
+
+  const toggleMusic = useCallback(() => {
+    // Once the user toggles music manually, disable the auto-start feature.
+    setHasManuallyControlledMusic(true);
+    setIsMusicPlaying(prev => !prev);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="simple-floatingedges flex flex-col h-screen">
+      <AudioPlayer src="/star-wars-theme.mp3" isPlaying={isMusicPlaying} />
+        <ReactFlow 
+          nodes={nodes}
+          edges={visibleEdges}
+          onNodesChange={onNodesChange}
+          onNodeDragStart={startMusicOnInteraction}
+          onPaneClick={startMusicOnInteraction}
+          edgeTypes={edgeTypes}
+          nodeTypes={nodeTypes}
+          fitView
+          fitViewOptions={fitViewOptions}
+          connectionMode={ConnectionMode.Loose}
+          className="bg-teal-50"
+        >
+          <Panel position="top-right">
+
+          </Panel>
+          <Controls showInteractive={false} />
+          <Background />
+
+        </ReactFlow>      
+        <BottomMenu toggleMusic={toggleMusic} isMusicPlaying={isMusicPlaying}  />       
     </div>
   );
-}
+};
+
+export default NodeAsHandleFlow;
