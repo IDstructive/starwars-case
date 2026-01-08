@@ -61,7 +61,7 @@ body {
   /* Custom Variables */
   --xy-theme-selected: #f57dbd;
   --xy-theme-hover: #c5c5c5;
-  --xy-theme-edge-hover: black;
+  --xy-theme-edge-hover: yellow;
   --xy-theme-color-focus: #e8e8e8;
   --xy-background-pattern-dots-color-default: transparent;
   --xy-edge-stroke-default: yellow;
@@ -96,8 +96,8 @@ body {
 
 .react-flow__node {
   box-shadow: var(--xy-node-boxshadow-default);
-  border-radius: var(--xy-node-border-radius-default);
-  background-color: var(--xy-node-background-color-default);
+  border-radius: 100%;
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -111,6 +111,7 @@ body {
 .react-flow__node.selectable:focus {
   box-shadow: 0px 0px 0px 4px var(--xy-theme-color-focus);
   border-color: #d9d9d9;
+  border-radius: 100%;
 }
 
 .react-flow__node.selectable:focus:active {
@@ -120,11 +121,13 @@ body {
 .react-flow__node.selectable:hover,
 .react-flow__node.draggable:hover {
   border-color: var(--xy-theme-hover);
+   border-radius: 100%;
 }
 
 .react-flow__node.selectable.selected {
   border-color: var(--xy-theme-selected);
   box-shadow: var(--xy-node-boxshadow-default);
+  border-radius: 100%;
 }
 
 .react-flow__node-group {
@@ -134,7 +137,7 @@ body {
 
 .react-flow__edge.selectable:hover .react-flow__edge-path,
 .react-flow__edge.selectable.selected .react-flow__edge-path {
-  stroke: var(--xy-theme-edge-hover);
+  stroke: yellow;
 }
 
 .react-flow__handle {
