@@ -14,7 +14,7 @@ import {
 } from '@xyflow/react';
 
 import './global.css';
-import '@xyflow/react/dist/style.css';
+import '@xyflow/react/dist/style.css'
 
 import { initialNodes } from './lib/initial-nodes';
 import { initialEdges } from './lib/initial-edges';
