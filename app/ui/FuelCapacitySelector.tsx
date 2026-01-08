@@ -10,20 +10,25 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export function FuelCapacitySelector() {
+interface FuelCapacitySelectorProps {
+  setFuel: (fuel: number) => void;
+  fuel: number;
+}
+
+export function FuelCapacitySelector({ setFuel, fuel }: FuelCapacitySelectorProps) {
   return (
-    <Select >
-      <SelectTrigger className="w-[180px] bg-yellow-500 border-none">
+    <Select onValueChange={(value) => setFuel(Number(value))} value={String(fuel)}>
+      <SelectTrigger className="w-[120px] bg-yellow-300 border-none rounded-lg">
         <SelectValue placeholder="Select a fuel capacity" />
       </SelectTrigger>
-      <SelectContent className="bg-white border-none">
+      <SelectContent className="bg-yellow-300 border-none">
         <SelectGroup>
           <SelectLabel>Fuel capacity</SelectLabel>
-          <SelectItem value="25">25j - I'm Too Young To Die</SelectItem>
-          <SelectItem value="20">20j - Hey, Not Too Rough</SelectItem>
-          <SelectItem value="15">15j - Hurt Me Plenty</SelectItem>
-          <SelectItem value="10">10j - Ultra-Violence</SelectItem>
-          <SelectItem value="5">5j - Nightmare!</SelectItem>
+          <SelectItem value="25">25 days</SelectItem>
+          <SelectItem value="20">20 days</SelectItem>
+          <SelectItem value="15">15 days</SelectItem>
+          <SelectItem value="10">10 days</SelectItem>
+          <SelectItem value="5">5 days</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

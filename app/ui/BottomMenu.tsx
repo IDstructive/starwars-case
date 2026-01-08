@@ -4,16 +4,19 @@ import { FuelCapacitySelector } from './FuelCapacitySelector';
 interface BottomMenuProps {
   toggleMusic: React.MouseEventHandler<HTMLButtonElement>;
   isMusicPlaying: boolean;
+  setFuel: (fuel: number) => void;
+  fuel: number;
 }
 
-export default function BottomMenu({ toggleMusic, isMusicPlaying }: BottomMenuProps) {
+export default function BottomMenu({ toggleMusic, isMusicPlaying, setFuel, fuel }: BottomMenuProps) {
 
   return (
-        <div className="flex flex-row p-4 bg-neutral-400 h-fit w-full content-center gap-4">
-          <button onClick={toggleMusic} className="w-fit h-fit bg-gray-200/80 p-2 rounded text-black">
-              {isMusicPlaying ? 'Pause' : 'Play'}
+        <div className="flex flex-row p-4 bg-transparent h-fit w-full content-center gap-4 justify-center">
+          <FuelCapacitySelector setFuel={setFuel} fuel={fuel} />
+          <button onClick={toggleMusic} className="w-fit h-9 bg-yellow-300 p-2 rounded-lg text-black text-[14px]">
+              {isMusicPlaying ? 'Pause music' : 'Play music'}
           </button>
-          <FuelCapacitySelector />
+
         </div>      
   );
 };

@@ -182,7 +182,7 @@ const NodeAsHandleFlow = () => {
           <Background />
 
         </ReactFlow>      
-        <BottomMenu toggleMusic={toggleMusic} isMusicPlaying={isMusicPlaying}  />       
+        <BottomMenu toggleMusic={toggleMusic} isMusicPlaying={isMusicPlaying} setFuel={setFuel} fuel={fuel} />       
     </div>
   );
 };
