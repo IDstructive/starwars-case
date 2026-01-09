@@ -6,13 +6,13 @@ export const initialNodes: Node[] = [
   {
     id: '1',
     position: { x: -500, y: 0 },
-    data: { label: 'Tatooine 🚀', handles: { right: true }, style: { width: 100, height: 100, borderColor: 'white', backgroundColor: '#646b69ff', color: 'white'} },
+    data: { label: 'Tatooine 🚀', handles: { right: true }, style: { width: 100, height: 100, borderColor: 'white', backgroundColor: 'rgb(100, 102, 107)', color: 'white'} },
     type: 'custom'
   },
   {
     id: '2',
     position: { x: -150, y: -400 },
-    data: { label: 'Dagobah', handles: { bottom: true }, style: { width: 220, height: 220, backgroundColor: '#646b69ff', color: '#a1c4c4ff'} },
+    data: { label: 'Dagobah', handles: { bottom: true }, style: { width: 220, height: 220, backgroundColor: 'rgb(41, 97, 81)', color: '#a1c4c4ff'} },
     type: 'custom',
   },
   {
