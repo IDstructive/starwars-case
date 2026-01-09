@@ -18,10 +18,10 @@ interface FuelCapacitySelectorProps {
 export function FuelCapacitySelector({ setFuel, fuel }: FuelCapacitySelectorProps) {
   return (
     <Select onValueChange={(value) => setFuel(Number(value))} value={String(fuel)}>
-      <SelectTrigger className="w-[120px] bg-yellow-300 border-none rounded-lg">
+      <SelectTrigger className="w-[120px] bg-white border-none rounded-lg">
         <SelectValue placeholder="Select a fuel capacity" />
       </SelectTrigger>
-      <SelectContent className="bg-yellow-300 border-none">
+      <SelectContent className="bg-white border-none">
         <SelectGroup>
           <SelectLabel>Fuel capacity</SelectLabel>
           <SelectItem value="25">25 days</SelectItem>
