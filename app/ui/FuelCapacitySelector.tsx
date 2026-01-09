@@ -28,7 +28,6 @@ export function FuelCapacitySelector({ setFuel, fuel }: FuelCapacitySelectorProp
           <SelectItem value="20">20 days</SelectItem>
           <SelectItem value="15">15 days</SelectItem>
           <SelectItem value="10">10 days</SelectItem>
-          <SelectItem value="5">5 days</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
