@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import {
   ReactFlow,
   Background,
@@ -42,6 +42,8 @@ const NodeAsHandleFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [allEdges, setAllEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [empireWinning, setEmpireWinning] = useState(true);
+    const [rebelsHaveWon, setRebelsHaveWon] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [fuel, setFuel] = useState(10);
   const [hasManuallyControlledMusic, setHasManuallyControlledMusic] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
@@ -144,10 +146,20 @@ const NodeAsHandleFlow = () => {
   }, [empireWinning, setAllEdges, setNodes]);
 
   useEffect(() => {
-    detectFullPath(visibleEdges) ? 
-    setEmpireWinning(false) :
-    setEmpireWinning(true)
-  }, [visibleEdges]);
+    const isEmpireWinning = !detectFullPath(visibleEdges);
+    if (isEmpireWinning) {
+      setRebelsHaveWon(false);
+      setEmpireWinning(true);
+    } else {
+      if (!rebelsHaveWon) {
+        if (audioRef.current) {
+          audioRef.current.play();
+        }
+        setRebelsHaveWon(true);
+      }
+      setEmpireWinning(false);
+    }
+  }, [visibleEdges, rebelsHaveWon]);
 
   const startMusicOnInteraction = useCallback(() => {
     // Start music on user interaction only if it hasn't been manually controlled yet.
@@ -164,6 +176,7 @@ const NodeAsHandleFlow = () => {
 
   return (
     <div className="simple-floatingedges flex flex-col h-screen">
+      <audio ref={audioRef} src="/death-star-burst.mp3" />
       <AudioPlayer src="/star-wars-theme.mp3" isPlaying={isMusicPlaying} />
         <ReactFlow 
           nodes={nodes}
