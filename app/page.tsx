@@ -26,7 +26,6 @@ import CustomEdge from './ui/CustomEdge';
 import AudioPlayer from './ui/AudioPlayer';
 import BottomMenu from './ui/BottomMenu';
 
-
 const nodeTypes = {
   custom: CustomNode,
 };
