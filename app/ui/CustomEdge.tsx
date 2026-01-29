@@ -35,7 +35,7 @@ const CustomEdge: FC<EdgeProps<Edge<{ label: string }>>> = ({
           }}
           className="edge-label-renderer__custom-edge nodrag nopan"
         >
-          {data.label}
+          {data?.label}
         </div>
       </EdgeLabelRenderer>
     </>
