@@ -126,7 +126,7 @@ const NodeAsHandleFlow = () => {
           
           return {
             ...node,
-            data: { ...node.data, label: newLabel, style: { ...node.data.style, borderWidth: 0.5, borderColor: 'white', color: newColor, backgroundColor: newBackgroundColor, zIndex: 0.1 } },
+            data: { ...node.data, label: newLabel, style: { ...node.data?.style|| {}, borderWidth: 0.5, borderColor: 'white', color: newColor, backgroundColor: newBackgroundColor, zIndex: 0.1 } },
           };
         }
         if (node.id === '5') {
@@ -136,7 +136,7 @@ const NodeAsHandleFlow = () => {
 
           return {
             ...node,
-            data: { ...node.data, label: newLabel, style: { ...node.data.style, borderWidth: 0.5, borderColor: 'white', color: newColor, backgroundColor: newBackgroundColor, zIndex: 0.1 } },
+            data: { ...node.data, label: newLabel, style: { ...node.data?.style|| {}, borderWidth: 0.5, borderColor: 'white', color: newColor, backgroundColor: newBackgroundColor, zIndex: 0.1 } },
           };
         }
         return node;
