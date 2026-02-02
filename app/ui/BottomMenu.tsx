@@ -16,14 +16,14 @@ export default function BottomMenu({ toggleMusic, isMusicPlaying, setFuel, fuel 
   
   const fetchJoke = async () => {
     try {
-      const response = await fetch('https://young-rapping-australia.mastra.cloud/api/space-travel-agent/generate', {
+      const response = await fetch('/api/agents/space-travel-agent/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         // The body structure Mastra expects
         body: JSON.stringify({
-          input: "tell me a sci-fi related joke",
+          messages: [{ role: "user", content: "tell me a sci-fi related joke" }],
         }),
       });
 
@@ -50,8 +50,11 @@ export default function BottomMenu({ toggleMusic, isMusicPlaying, setFuel, fuel 
               </> 
               }
           </button>
+          <button onClick={fetchJoke} className="flex w-fit gap-1 content-center h-9 bg-white p-2 rounded-lg text-black text-[14px]">
+            Get Joke
+          </button>
+          <Joke joke={joke}/> 
         </div>      
-        <Joke joke={joke}/>
       </>
   );
 };
