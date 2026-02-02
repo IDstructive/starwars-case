@@ -23,7 +23,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, isPlaying, loop = true }
       if (playPromise !== undefined) {
         playPromise.catch(error => {
           // Autoplay was prevented. We'll wait for the first user interaction.
-          console.log("Autoplay was prevented. Waiting for user interaction.");
+          // console.log("Autoplay was prevented. Waiting for user interaction.");
           
           const playOnFirstInteraction = () => {
             audioRef.current?.play().catch(e => console.error("Audio play failed on interaction:", e));

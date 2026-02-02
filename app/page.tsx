@@ -73,9 +73,9 @@ const NodeAsHandleFlow = () => {
   }, [nodes, allEdges.length]);
 
 
-  useEffect(() => {
-    console.log(possiblePaths(visibleEdges, fuel));
-  }, [visibleEdges, fuel]);
+  // useEffect(() => {
+  //   console.log(possiblePaths(visibleEdges, fuel));
+  // }, [visibleEdges, fuel]);
 
 
   useEffect(() => {
