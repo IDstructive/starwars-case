@@ -176,8 +176,8 @@ const NodeAsHandleFlow = () => {
 
   return (
     <div className="simple-floatingedges flex flex-col h-screen">
-      <audio ref={audioRef} src="/death-star-burst.mp3" />
-      <AudioPlayer src="/star-wars-theme.mp3" isPlaying={isMusicPlaying} />
+      {/* <audio ref={audioRef} src="/death-star-burst.mp3" /> */}
+      {/* <AudioPlayer src="/star-wars-theme.mp3" isPlaying={isMusicPlaying} /> */}
         <ReactFlow 
           nodes={nodes}
           edges={visibleEdges}
